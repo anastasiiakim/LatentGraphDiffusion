@@ -16,6 +16,7 @@ wandb:
 dataset:
   format: PyG-ZINC
   name: subset
+  dataset_dir: ~/Documents/diffusion/LatentGraphDiffusion/datasets/ZINC #AK
   task: graph
   task_type: regression
   transductive: False
@@ -162,3 +163,5 @@ optim:
   num_warmup_epochs: 50
   scheduler: cosine_with_warmup
   min_lr: 1e-6
+pretrained: #AK
+  dir: "" #AK

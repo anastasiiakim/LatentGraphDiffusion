@@ -228,11 +228,15 @@ def run_loop_settings():
         List of rng seeds to loop over
         List of dataset split indices to loop over
     """
-    if len(cfg.run_multiple_splits) == 0:
+    run_multiple_splits = []
+    split_index = 0
+    #if len(cfg.run_multiple_splits) == 0:
+    if len(run_multiple_splits) == 0:
         # 'multi-seed' run mode
         num_iterations = args.repeat
         seeds = [cfg.seed + x for x in range(num_iterations)]
-        split_indices = [cfg.dataset.split_index] * num_iterations
+        #split_indices = [cfg.dataset.split_index] * num_iterations
+        split_indices = [split_index] * num_iterations
         run_ids = seeds
     else:
         # 'multi-split' run mode
@@ -247,6 +251,7 @@ def run_loop_settings():
 
 
 if __name__ == '__main__':
+    name_tag = 'zinc' #AK
     # Load cmd line args
     args = parse_args()
     # Load config file
@@ -254,7 +259,8 @@ if __name__ == '__main__':
     cfg.set_new_allowed(True)
     load_cfg(cfg, args)
     # print(cfg)
-    custom_set_out_dir(cfg, args.cfg_file, cfg.name_tag)
+    #custom_set_out_dir(cfg, args.cfg_file, cfg.name_tag)
+    custom_set_out_dir(cfg, args.cfg_file, name_tag)
     dump_cfg(cfg)
     for run_id, seed, split_index in zip(*run_loop_settings()):
         # Set configurations for each run
