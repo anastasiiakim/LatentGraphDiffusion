@@ -10,22 +10,11 @@ In this paper, we propose the first framework that enables solving graph learnin
 We build our code based on [GraphGPS](https://github.com/rampasek/GraphGPS) with many modification and improvements, including combining it with DDPM.
 
 ```bash
-conda create -n lgd python=3.9
-conda activate lgd
-
-conda install pytorch=1.10 torchvision torchaudio -c pytorch -c nvidia
-conda install pyg=2.0.4 -c pyg -c conda-forge
-
-# RDKit is required for OGB-LSC PCQM4Mv2 and datasets derived from it.  
-conda install openbabel fsspec rdkit -c conda-forge
-
-pip install torchmetrics
-pip install performer-pytorch
-pip install ogb
-pip install tensorboardX
-pip install wandb
-
-conda clean --all
+conda env create -f myenv.yaml
+pip install torch-scatter -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+pip install torch-sparse -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+pip install torch-cluster -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+pip install torch-spline-conv -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
 ```
 
 ### Running LGD
