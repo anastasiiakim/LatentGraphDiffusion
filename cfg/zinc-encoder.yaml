@@ -6,6 +6,7 @@ tensorboard_each_run: False  # Log to Tensorboard each run
 #accelerator: "cuda:3"
 #device: "cuda:3"
 accelerator: "cuda:0"
+bn_momentum: 0.1 #AK
 mlflow:
   use: False
   project: Exp
@@ -50,11 +51,13 @@ train:
     node_factor: 0.0
     edge_factor: 0.0
     graph_factor: 1.0
+    atom_bond_only: False #AK
 model:
   type: GraphTransformerEncoder
-  loss_fun: l1
+  loss_fun: mae #l1 AK
   edge_decoding: dot
   graph_pooling: add
+  label_embed_type: add_virtual
 encoder:
   in_dim: 36
   prefix_dim: 64
@@ -84,6 +87,8 @@ encoder:
     attn_product: mul
     attn_reweight: True
     edge_reweight: True
+    bn_momentum: 0.1 #AK
+    bn_no_runner: False #AK
   mpnn:
     enable: True
     act: 'relu'
@@ -123,7 +128,7 @@ gt:
   dropout: 0.0
   layer_norm: False
   batch_norm: True
-#  bn_momentum: 0.01
+  bn_momentum: 0.01
   update_e: True
   attn_dropout: 0.2
   attn:
@@ -154,6 +159,7 @@ posenc_RWSE:
 posenc_RRWP:
   enable: True
   ksteps: 20
+  spd: FALSE #AK
 optim:
   clip_grad_norm: True
   optimizer: adamW
@@ -163,5 +169,29 @@ optim:
   num_warmup_epochs: 50
   scheduler: cosine_with_warmup
   min_lr: 1e-6
+  reduce_factor: 0.5         #AK <--- Add this line
+  schedule_patience: 50      #AK <--- And this one, likely needed next
+  lr_decay: 0.5              #AK <--- Often used synonymously
+  batch_accumulation: 1 #AK
 pretrained: #AK
   dir: "" #AK
+posenc_LapPE: #AK this and all below
+  enable: False               # Define as False if you don’t plan to use LapPE for ZINC
+  eigen:
+    laplacian_norm: none      # Laplacian normalization (e.g., 'none', or 'sym' for symmetric norm)
+    eigvec_norm: L2           # Eigenvector normalization (e.g., L2 normalization)
+    max_freqs: 1              # Number of Laplacian eigenpairs (frequencies) to use
+  model: DeepSet              # Model type to embed the positional encodings
+  dim_pe: 28                  # Dimension for the positional encoding (match posenc_dim if applicable)
+  layers: 2                   # (If using a DeepSet model, number of layers in the encoder)
+  raw_norm_type: none         # Normalization for raw Laplacian features (if any)
+prep:
+  exp: null
+  dist_enable: False
+  find_unused_parameters: False
+posenc_ERN:
+  enable: False
+  dim_pe: 0
+posenc_ERE:
+  enable: False
+  dim_pe: 0

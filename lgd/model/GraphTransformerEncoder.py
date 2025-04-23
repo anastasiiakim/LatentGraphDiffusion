@@ -324,9 +324,10 @@ class GraphTransformerEncoderLayer(nn.Module):
         if self.batch_norm:
             # when the batch_size is really small, use smaller momentum to avoid bad mini-batch leading to extremely bad val/test loss (NaN)
             self.batch_norm1_h = nn.BatchNorm1d(out_dim, track_running_stats=not self.bn_no_runner, eps=1e-5,
-                                                momentum=cfg.bn_momentum)
+                                                momentum=0.1) #AK
+                                                #momentum=cfg.bn_momentum)
             self.batch_norm1_e = nn.BatchNorm1d(out_dim, track_running_stats=not self.bn_no_runner, eps=1e-5,
-                                                momentum=cfg.bn_momentum) if norm_e else nn.Identity()
+                                                momentum=0.1) if norm_e else nn.Identity()#AK changed bn_momentum
 
         # FFN for h
         self.FFN_h_layer1 = nn.Linear(out_dim, out_dim * 2)
@@ -341,9 +342,9 @@ class GraphTransformerEncoderLayer(nn.Module):
 
         if self.batch_norm:
             self.batch_norm2_h = nn.BatchNorm1d(self.final_dim, track_running_stats=not self.bn_no_runner, eps=1e-5,
-                                                momentum=cfg.bn_momentum)
+                                                momentum=0.1) #AK changed bn_momentum
             self.batch_norm2_e = nn.BatchNorm1d(self.final_dim, track_running_stats=not self.bn_no_runner, eps=1e-5,
-                                                momentum=cfg.bn_momentum) if norm_e else nn.Identity()
+                                                momentum=0.1) if norm_e else nn.Identity()
 
         if self.rezero:
             self.alpha1_h = nn.Parameter(torch.zeros(1, 1))
@@ -500,8 +501,9 @@ class GraphTransformerEncoder(nn.Module):
         self.act = act_dict[cfg.act]() if cfg.act is not None else nn.Identity()
         self.update_e = cfg.get("update_e", True)
         self.force_undirected = cfg.get("force_undirected", False)
-        self.bn_momentum = cfg.bn_momentum
-        self.bn_no_runner = cfg.bn_no_runner
+        #self.bn_momentum = cfg.bn_momentum
+        self.bn_momentum = 0.1#AK
+        self.bn_no_runner = False #AK cfg.bn_no_runner
 
         self.node_dict_dim = cfg.get('node_encoder_num_types', 1)  
         self.edge_dict_dim = cfg.get('edge_encoder_num_types', 1)
@@ -544,8 +546,10 @@ class GraphTransformerEncoder(nn.Module):
                                                     nn.Linear(2 * self.hid_dim, self.hid_dim), label_norm, self.act)
         self.pseudo_label = nn.Parameter(torch.zeros(1, self.hid_dim))
         self.label_embed_classification = nn.Embedding(cfg.get("num_classes", 2) + 1, self.hid_dim)
-        self.label_embed_type = cfg.get('label_embed_type', 'add_virtual')
-        assert self.label_embed_type in ['add_virtual', 'add_all']
+        #self.label_embed_type = cfg.get('label_embed_type', 'add_virtual')
+        self.label_embed_type = (cfg.label_embed_type if hasattr(cfg, 'label_embed_type') else 'add_virtual')#AK
+
+        #assert self.label_embed_type in ['add_virtual', 'add_all'] #AK
 
         if self.posenc_in_dim > 0 and self.posenc_dim > 0:
             if cfg.get('pe_raw_norm', None) == 'BatchNorm':

@@ -31,7 +31,9 @@ from lgd.optimizer.extra_optimizers import ExtendedSchedulerConfig
 from lgd.agg_runs import agg_runs
 from lgd.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
-
+from lgd.model.GraphTransformerEncoder import GraphTransformerEncoder #AK
+from lgd.encoder import type_dict_encoder #AK
+from lgd.train.pretrain_encoder import custom_pretrain_encoder#AK
 #
 # parser = argparse.ArgumentParser()
 # parser.add_argument("--dataset", type=str, default="zinc12")

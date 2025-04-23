@@ -182,6 +182,75 @@ dependencies:
       - pytest==7.4.3
       - python-dateutil==2.8.2
       - pytorch-lightning==2.1.2
+ - mpfr=4.0.2=hb69a4c5_1
+  - mpmath=1.3.0=py310h06a4308_0
+  - ncurses=6.4=h6a678d5_0
+  - nettle=3.7.3=hbbd107a_1
+  - networkx=3.1=py310h06a4308_0
+  - numpy=1.25.2=py310h5f9d8c6_0
+  - numpy-base=1.25.2=py310hb5e798b_0
+  - openh264=2.1.1=h4ff587b_0
+  - openssl=3.0.10=h7f8727e_0
+  - pillow=9.4.0=py310h6a678d5_0
+  - pip=23.2.1=py310h06a4308_0
+  - psutil=5.9.0=py310h5eee18b_0
+  - pycparser=2.21=pyhd3eb1b0_0
+  - pyopenssl=23.2.0=py310h06a4308_0
+  - pyparsing=3.0.9=py310h06a4308_0
+  - pysocks=1.7.1=py310h06a4308_0
+  - python=3.10.12=h955ad1f_0
+  - pytorch=2.0.1=py3.10_cuda11.7_cudnn8.5.0_0
+  - pytorch-cuda=11.7=h778d358_5
+  - pytorch-mutex=1.0=cuda
+  - readline=8.2=h5eee18b_0
+  - requests=2.31.0=py310h06a4308_0
+  - scikit-learn=1.3.0=py310h1128e8f_0
+  - scipy=1.11.1=py310h5f9d8c6_0
+  - setuptools=68.0.0=py310h06a4308_0
+  - sqlite=3.41.2=h5eee18b_0
+  - sympy=1.11.1=py310h06a4308_0
+  - tbb=2021.8.0=hdb19cb5_0
+  - threadpoolctl=2.2.0=pyh0d69192_0
+  - tk=8.6.12=h1ccaba5_0
+  - torchaudio=2.0.2=py310_cu117
+  - torchtriton=2.0.0=py310
+  - torchvision=0.15.2=py310_cu117
+  - tqdm=4.65.0=py310h2f386ee_0
+  - urllib3=1.26.16=py310h06a4308_0
+  - wheel=0.38.4=py310h06a4308_0
+  - xz=5.4.2=h5eee18b_0
+  - zlib=1.2.13=h5eee18b_0
+  - zstd=1.5.5=hc292b87_0
+  - pip:
+      - absl-py==2.1.0
+      - accelerate==0.24.1
+      - addict==2.4.0
+      - aiohttp==3.9.1
+      - aiosignal==1.3.1
+      - alembic==1.11.2
+      - antlr4-python3-runtime==4.9.3
+      - ase==3.23.0
+      - async-timeout==4.0.3
+      - attrs==23.1.0
+      - axial-positional-embedding==0.2.1
+      - bounded-pool-executor==0.0.3
+      - click==8.1.7
+      - cmaes==0.10.0
+      - colorlog==6.7.0
+      - contourpy==1.2.0
+      - cupy-cuda11x==12.2.0
+      - cycler==0.12.1
+      - datasets==2.15.0
+      - dill==0.3.7
+      - docker-pycreds==0.4.0
+      - einops==0.7.0
+      - exceptiongroup==1.1.3
+      - fastrlock==0.8.1
+      - fcd-torch==1.0.7
+      - fonttools==4.47.0
+      - frozenlist==1.4.1
+      - fsspec==2023.10.0
+      - gitdb==4.0.11      
       - pytz==2023.3
       - pyyaml==6.0.1
       - rdkit==2023.9.2
@@ -214,4 +283,4 @@ dependencies:
       - yamf==0.7
       - yapf==0.43.0
       - yarl==1.9.4
-prefix: /usr/projects/t23_ad6800/condaenvs/graphs2025
+prefix: ./

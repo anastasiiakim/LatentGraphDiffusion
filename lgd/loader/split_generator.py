@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-
+import torch
 import numpy as np
 from sklearn.model_selection import KFold, StratifiedKFold, ShuffleSplit
 from torch_geometric.graphgym.config import cfg
@@ -121,6 +121,35 @@ def setup_random_split(dataset):
     )
     val_index = val_test_index[val_index]
     test_index = val_test_index[test_index]
+
+    set_dataset_splits(dataset, [train_index, val_index, test_index])
+
+#AK replaced the function above with this:
+def setup_random_split(dataset):
+    """Generate random splits for train/val/test."""
+    split_ratios = cfg.dataset.split
+
+    if len(split_ratios) != 3:
+        raise ValueError(f"Expected 3 split ratios, got {len(split_ratios)}: {split_ratios}")
+    elif sum(split_ratios) != 1:
+        raise ValueError(f"Split ratios must sum to 1, got {sum(split_ratios):.2f}: {split_ratios}")
+
+    labels = dataset.data.y.clone().detach().cpu().long()
+    train_index, val_test_index = next(
+        ShuffleSplit(train_size=split_ratios[0], random_state=cfg.seed).split(labels, labels)
+    )
+    
+    val_test_index = torch.tensor(val_test_index, dtype=torch.long)
+    val_labels = labels[val_test_index]
+    val_index, test_index = next(
+        ShuffleSplit(
+            train_size=split_ratios[1] / (1 - split_ratios[0]),
+            random_state=cfg.seed
+        ).split(val_labels, val_labels)
+    )
+
+    val_index = val_test_index[torch.tensor(val_index, dtype=torch.long)]
+    test_index = val_test_index[torch.tensor(test_index, dtype=torch.long)]
 
     set_dataset_splits(dataset, [train_index, val_index, test_index])
 
